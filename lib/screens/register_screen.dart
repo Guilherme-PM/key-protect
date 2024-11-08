@@ -14,15 +14,18 @@ class RegisterScreen extends StatelessWidget {
     if (passwordController.text == confirmPasswordController.text) {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
         );
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Usuário cadastrado com sucesso!')),
         );
+
+        Navigator.pop(context); // Voltar para a tela de login após o cadastro
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro: ${e.toString()}')),
+          SnackBar(content: Text('Erro ao cadastrar: ${e.toString()}')),
         );
       }
     } else {
