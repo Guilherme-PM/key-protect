@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,6 +8,8 @@ class RegisterScreen extends StatelessWidget {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  RegisterScreen({super.key});
+
   Future<void> registerUser(BuildContext context) async {
     if (passwordController.text == confirmPasswordController.text) {
       try {
@@ -17,7 +18,7 @@ class RegisterScreen extends StatelessWidget {
           password: passwordController.text,
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Usuário cadastrado com sucesso!')),
+          const SnackBar(content: Text('Usuário cadastrado com sucesso!')),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -26,7 +27,7 @@ class RegisterScreen extends StatelessWidget {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('As senhas não coincidem')),
+        const SnackBar(content: Text('As senhas não coincidem')),
       );
     }
   }
@@ -34,39 +35,43 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro')),
+      appBar: AppBar(title: const Text('Cadastro')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: fullNameController,
-              decoration: InputDecoration(labelText: 'Nome Completo'),
+              decoration: const InputDecoration(labelText: 'Nome Completo'),
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: phoneController,
-              decoration: InputDecoration(labelText: 'Número de Telefone'),
+              decoration: const InputDecoration(labelText: 'Número de Telefone'),
               keyboardType: TextInputType.phone,
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(labelText: 'Senha'),
+              decoration: const InputDecoration(labelText: 'Senha'),
               obscureText: true,
             ),
+            const SizedBox(height: 16),
             TextField(
               controller: confirmPasswordController,
-              decoration: InputDecoration(labelText: 'Confirmar Senha'),
+              decoration: const InputDecoration(labelText: 'Confirmar Senha'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => registerUser(context),
-              child: Text('Cadastrar'),
+              child: const Text('Cadastrar'),
             ),
           ],
         ),
