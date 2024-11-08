@@ -1,64 +1,72 @@
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  final fullNameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  Future<void> registerUser(BuildContext context) async {
+    if (passwordController.text == confirmPasswordController.text) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Usuário cadastrado com sucesso!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro: ${e.toString()}')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('As senhas não coincidem')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final fullNameController = TextEditingController();
-    final phoneController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      appBar: AppBar(title: Text('Cadastro')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
               controller: fullNameController,
-              decoration: const InputDecoration(labelText: 'Full Name'),
+              decoration: InputDecoration(labelText: 'Nome Completo'),
             ),
-            const SizedBox(height: 16),
             TextField(
               controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone Number'),
+              decoration: InputDecoration(labelText: 'Número de Telefone'),
               keyboardType: TextInputType.phone,
             ),
-            const SizedBox(height: 16),
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 16),
             TextField(
               controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: 'Senha'),
               obscureText: true,
             ),
-            const SizedBox(height: 16),
             TextField(
               controller: confirmPasswordController,
-              decoration: const InputDecoration(labelText: 'Confirm Password'),
+              decoration: InputDecoration(labelText: 'Confirmar Senha'),
               obscureText: true,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                if (passwordController.text == confirmPasswordController.text) {
-                  // Add registration logic here
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Passwords do not match')),
-                  );
-                }
-              },
-              child: const Text('Register'),
+              onPressed: () => registerUser(context),
+              child: Text('Cadastrar'),
             ),
           ],
         ),
